@@ -39,6 +39,7 @@ rt:setTermCriteria            {cv.TermCriteria{cv.TermCriteria_MAX_ITER+cv.TermC
 local timer = torch.Timer()
 rt:train{trainData, cv.ml.ROW_SAMPLE, trainLabel}
 print("RT training time: " .. timer:time().real .. " seconds")
+rt:save('./RT_MNIST_MODEL')
 
 -- Test the RT
 local predict = torch.Tensor(testData:size(1))
