@@ -19,10 +19,10 @@ local testLabel = (testset.label+1):int()
 classes = {'1','2','3','4','5','6','7','8','9','0'}
 confusion = optim.ConfusionMatrix(classes)
 
-trainData = trainData[{ {1,200},{} }]
-trainLabel = trainLabel[{ {1,200} }]
-testData = testData[{ {1,200},{} }]
-testLabel = testLabel[{ {1,200} }]
+trainData = trainData[{ {1,10},{} }]
+trainLabel = trainLabel[{ {1,10} }]
+testData = testData[{ {1,10},{} }]
+testLabel = testLabel[{ {1,10} }]
 
 -- Build RT
 -- Set up Random Tree's parameters
@@ -39,12 +39,16 @@ rt:setTermCriteria            {cv.TermCriteria{cv.TermCriteria_MAX_ITER+cv.TermC
 local timer = torch.Timer()
 rt:train{trainData, cv.ml.ROW_SAMPLE, trainLabel}
 print("RT training time: " .. timer:time().real .. " seconds")
+print(rt:getActiveVarCount())
 rt:save('./RT_MNIST_MODEL')
 
 -- Test the RT
+local rt_new = cv.ml.RTrees()
+rt_new:load('./RT_MNIST_MODEL')
+print(rt_new:getActiveVarCount())
 local predict = torch.Tensor(testData:size(1))
 for i = 1, testData:size(1) do
-	predict[i] = rt:predict{testData[i]}
+	predict[i] = rt_new:predict{testData[i]}
 	confusion:add(predict[i], testLabel[i])
 end
 

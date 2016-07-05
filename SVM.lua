@@ -31,6 +31,16 @@ svm:setTermCriteria {cv.TermCriteria{cv.TermCriteria_MAX_ITER, 100, 1e-6}}
 
 -- Train the SVM
 svm:train{trainingDataMat, cv.ml.ROW_SAMPLE, labelsMat}
+svm:save('./SVM_MODEL')
+
+local svm = cv.ml.SVM()
+svm:load('./SVM_MODEL')
+--[[
+local file = cv.FileStorage{source='./SVM_MODEL.xml', flags=cv.FILE_STORAGE_READ}
+print(file:isOpened())
+local filenode = cv.FileNode{file}
+svm:read(file)
+--]]
 
 -- Show the decision regions given by the SVM
 local timer = torch.Timer()
