@@ -21,8 +21,8 @@ confusion = optim.ConfusionMatrix(classes)
 
 trainData = trainData[{ {1,10},{} }]
 trainLabel = trainLabel[{ {1,10} }]
-testData = testData[{ {1,10},{} }]
-testLabel = testLabel[{ {1,10} }]
+testData = testData[{ {1,200},{} }]
+testLabel = testLabel[{ {1,200} }]
 
 -- Build RT
 -- Set up Random Tree's parameters
@@ -43,6 +43,15 @@ print(rt:getActiveVarCount())
 rt:save('./RT_MNIST_MODEL')
 
 -- Test the RT
+print(rt:getActiveVarCount())
+local predict = torch.Tensor(testData:size(1))
+for i = 1, testData:size(1) do
+	predict[i] = rt:predict{testData[i]}
+	confusion:add(predict[i], testLabel[i])
+end
+print(confusion)
+
+-- Test the RT reload
 local rt_new = cv.ml.RTrees()
 rt_new:load('./RT_MNIST_MODEL')
 print(rt_new:getActiveVarCount())
@@ -51,7 +60,5 @@ for i = 1, testData:size(1) do
 	predict[i] = rt_new:predict{testData[i]}
 	confusion:add(predict[i], testLabel[i])
 end
-
--- Print confusion matrix
 print(confusion)
 
