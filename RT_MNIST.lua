@@ -54,6 +54,7 @@ print(confusion)
 -- Test the RT reload
 local rt_new = cv.ml.RTrees()
 rt_new:load('./RT_MNIST_MODEL')
+confusion = optim.ConfusionMatrix(classes)
 print(rt_new:getActiveVarCount())
 local predict = torch.Tensor(testData:size(1))
 for i = 1, testData:size(1) do
