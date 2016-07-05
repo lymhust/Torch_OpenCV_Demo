@@ -19,21 +19,23 @@ local testLabel = (testset.label+1):int()
 classes = {'1','2','3','4','5','6','7','8','9','0'}
 confusion = optim.ConfusionMatrix(classes)
 
-trainData = trainData[{ {1,10},{} }]
-trainLabel = trainLabel[{ {1,10} }]
-testData = testData[{ {1,200},{} }]
-testLabel = testLabel[{ {1,200} }]
+--[[
+trainData = trainData[{ {1,1000},{} }]
+trainLabel = trainLabel[{ {1,1000} }]
+testData = testData[{ {1,500},{} }]
+testLabel = testLabel[{ {1,500} }]
+--]]
 
 -- Build RT
 -- Set up Random Tree's parameters
 local rt = cv.ml.RTrees()
-rt:setMaxDepth  		          {3}
-rt:setMinSampleCount		      {1}
-rt:setMaxCategories 		      {10}
+rt:setMaxDepth  		          {25}
+rt:setMinSampleCount		      {5}
+rt:setMaxCategories 		      {15}
 rt:setCalculateVarImportance  {true}
-rt:setRegressionAccuracy      {1e-4}
-rt:setActiveVarCount          {2048}
-rt:setTermCriteria            {cv.TermCriteria{cv.TermCriteria_MAX_ITER+cv.TermCriteria_EPS, 1000, 1e-4}}
+rt:setRegressionAccuracy      {1e-2}
+rt:setActiveVarCount          {4}
+rt:setTermCriteria            {cv.TermCriteria{cv.TermCriteria_MAX_ITER+cv.TermCriteria_EPS+cv.TERM_CRITERIA_COUNT, 1000, 1e-2, 100}}
 
 -- Train the RT
 local timer = torch.Timer()
