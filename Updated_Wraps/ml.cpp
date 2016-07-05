@@ -869,8 +869,8 @@ struct TensorWrapper DTrees_getSubsets(struct DTreesPtr ptr)
 
 // RTrees
 extern "C"
-void RTrees_load(struct RTreesPtr ptr, const char *filename) {
-    ptr->load<ml::RTrees>(filename);
+struct RTreesPtr RTrees_load(const char *filename) {
+		return rescueObjectFromPtr(ml::RTrees::load<ml::RTrees>(filename));
 }
 
 extern "C"

@@ -433,7 +433,7 @@ struct TensorWrapper DTrees_getSubsets(struct PtrWrapper ptr);
 
 struct PtrWrapper RTrees_ctor();
 
-void RTrees_load(const char *filename);
+struct PtrWrapper RTrees_load(const char *filename);
 
 void RTrees_setCalculateVarImportance(struct PtrWrapper ptr, bool val);
 
@@ -1418,9 +1418,9 @@ do
         self.ptr = ffi.gc(C.RTrees_ctor(), Classes.Algorithm_dtor)
     end
     
-    function RTrees:load(filename)
-				C.RTrees_load(self.ptr, filename)
-	  end
+		function RTrees:load(filename)
+			self.ptr = ffi.gc(C.RTrees_load(filename), Classes.Algorithm_dtor)
+		end
 
     function RTrees:setCalculateVarImportance(t)
         local argRules = {

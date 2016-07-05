@@ -483,7 +483,7 @@ struct RTreesPtr {
 };
 
 extern "C"
-void RTrees_load(struct RTreesPtr ptr, const char *filename);
+struct RTreesPtr RTrees_load(const char *filename);
 
 extern "C"
 struct RTreesPtr RTrees_ctor();
